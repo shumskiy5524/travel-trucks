@@ -3,10 +3,11 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FaStar, FaMapMarkerAlt } from 'react-icons/fa';
 import { Camper } from '@/types/camper';
 import BookingForm from '@/components/BookingForm';
+import Image from 'next/image';
 
 const fetchCamperDetails = async (id: string) => {
   const response = await axios.get<Camper>(
@@ -17,11 +18,16 @@ const fetchCamperDetails = async (id: string) => {
 
 export default function CamperDetailsPage() {
   const params = useParams();
-  const camperId = Array.isArray(params.camperId)
-    ? params.camperId[0]
-    : params.camperId;
 
-  const [activeTab, setActiveTab] = useState<'features' | 'reviews'>('features');
+  const camperId = useMemo(() => {
+    const id = params?.camperId;
+    if (Array.isArray(id)) return id[0];
+    return id;
+  }, [params]);
+
+  const [activeTab, setActiveTab] = useState<'features' | 'reviews'>(
+    'features'
+  );
 
   const {
     data: camper,
@@ -30,7 +36,7 @@ export default function CamperDetailsPage() {
   } = useQuery({
     queryKey: ['camper', camperId],
     queryFn: () => fetchCamperDetails(camperId as string),
-    enabled: !!camperId,
+    enabled: typeof camperId === 'string' && camperId.length > 0,
   });
 
   if (isLoading) {
@@ -49,9 +55,13 @@ export default function CamperDetailsPage() {
     );
   }
 
+  const safePrice =
+    typeof camper.price === 'number'
+      ? camper.price.toFixed(2)
+      : Number(camper.price || 0).toFixed(2);
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-      {/* Header */}
       <h1 className="text-3xl font-semibold text-[#101828]">
         {camper.name}
       </h1>
@@ -71,31 +81,30 @@ export default function CamperDetailsPage() {
       </div>
 
       <div className="text-3xl font-semibold text-[#101828] mt-4">
-        €{camper.price?.toFixed(2)}
+        €{safePrice}
       </div>
 
-      {/* Gallery */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
         {camper.gallery?.map((img, idx) => (
           <div
             key={idx}
             className="h-[310px] overflow-hidden rounded-2xl bg-gray-100"
           >
-            <img
-              src={img.original}
-              alt={`${camper.name} gallery ${idx}`}
+            <Image
+              src={camper.gallery[0]?.thumb || 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?q=80&w=400'}
+              alt={camper.name}
+              width={400}
+              height={300}
               className="w-full h-full object-cover"
             />
           </div>
         ))}
       </div>
 
-      {/* Description */}
       <p className="text-[#475467] text-base leading-relaxed mt-7 max-w-3xl">
         {camper.description}
       </p>
 
-      {/* Tabs */}
       <div className="flex gap-10 border-b border-[#E4E7EC] mt-12 mb-10">
         <button
           onClick={() => setActiveTab('features')}
@@ -106,9 +115,6 @@ export default function CamperDetailsPage() {
           }`}
         >
           Features
-          {activeTab === 'features' && (
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#E44848]" />
-          )}
         </button>
 
         <button
@@ -120,13 +126,9 @@ export default function CamperDetailsPage() {
           }`}
         >
           Reviews
-          {activeTab === 'reviews' && (
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#E44848]" />
-          )}
         </button>
       </div>
 
-      {/* Content */}
       <div className="flex flex-col lg:flex-row gap-16 items-start">
         <div className="flex-grow w-full">
           {activeTab === 'features' ? (
@@ -136,31 +138,29 @@ export default function CamperDetailsPage() {
               </h3>
 
               <ul className="flex flex-col gap-4 text-base font-medium">
-                <li className="flex justify-between border-b border-[#E4E7EC]/50 pb-2">
+                <li className="flex justify-between">
                   <span className="text-[#475467]">Length</span>
-                  <span className="text-[#101828]">{camper.length}</span>
+                  <span>{camper.length}</span>
                 </li>
 
-                <li className="flex justify-between border-b border-[#E4E7EC]/50 pb-2">
+                <li className="flex justify-between">
                   <span className="text-[#475467]">Width</span>
-                  <span className="text-[#101828]">{camper.width}</span>
+                  <span>{camper.width}</span>
                 </li>
 
-                <li className="flex justify-between border-b border-[#E4E7EC]/50 pb-2">
+                <li className="flex justify-between">
                   <span className="text-[#475467]">Height</span>
-                  <span className="text-[#101828]">{camper.height}</span>
+                  <span>{camper.height}</span>
                 </li>
 
-                <li className="flex justify-between border-b border-[#E4E7EC]/50 pb-2">
+                <li className="flex justify-between">
                   <span className="text-[#475467]">Tank</span>
-                  <span className="text-[#101828]">{camper.tank}</span>
+                  <span>{camper.tank}</span>
                 </li>
 
-                <li className="flex justify-between pb-2">
+                <li className="flex justify-between">
                   <span className="text-[#475467]">Consumption</span>
-                  <span className="text-[#101828]">
-                    {camper.consumption}
-                  </span>
+                  <span>{camper.consumption}</span>
                 </li>
               </ul>
             </div>
@@ -174,9 +174,7 @@ export default function CamperDetailsPage() {
                     </div>
 
                     <div>
-                      <h4 className="text-base font-semibold text-[#101828]">
-                        {review.reviewer_name}
-                      </h4>
+                      <h4>{review.reviewer_name}</h4>
 
                       <div className="flex gap-1 mt-1">
                         {[...Array(5)].map((_, i) => (
@@ -193,7 +191,7 @@ export default function CamperDetailsPage() {
                     </div>
                   </div>
 
-                  <p className="text-[#475467] text-sm leading-relaxed">
+                  <p className="text-[#475467] text-sm">
                     {review.comment}
                   </p>
                 </div>
@@ -202,7 +200,7 @@ export default function CamperDetailsPage() {
           )}
         </div>
 
-        <BookingForm camperId={camper.id} />
+        {camperId && <BookingForm camperId={camper.id} />}
       </div>
     </div>
   );
