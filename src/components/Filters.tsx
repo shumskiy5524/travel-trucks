@@ -1,191 +1,226 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  FaMapMarkerAlt,
-  FaWind,
-  FaTv,
-  FaCog,
-} from 'react-icons/fa';
-import {
-  MdKitchen,
-  MdShower,
-} from 'react-icons/md';
-import { TbGridDots } from 'react-icons/tb';
 
-import { FilterState } from '@/types/camper';
+type FiltersState = {
+  location: string;
+  form: string;
+  transmission: string;
+  engine: string;
+  AC: boolean;
+  kitchen: boolean;
+  TV: boolean;
+  bathroom: boolean;
+};
 
-interface FiltersProps {
-  onSearch: (filters: FilterState) => void;
-}
+type Props = {
+  onSearch: (filters: FiltersState) => void;
+};
 
-export default function Filters({ onSearch }: FiltersProps) {
-  const [location, setLocation] = useState('');
-  const [form, setForm] = useState('');
-  const [transmission, setTransmission] = useState('');
+export default function Filters({ onSearch }: Props) {
+  const [filters, setFilters] = useState<FiltersState>({
+    location: '',
+    form: '',
+    transmission: '',
+    engine: '',
+    AC: false,
+    kitchen: false,
+    TV: false,
+    bathroom: false,
+  });
 
-  const [AC, setAC] = useState(false);
-  const [kitchen, setKitchen] = useState(false);
-  const [tv, setTv] = useState(false);
-  const [bathroom, setBathroom] = useState(false);
+  const update = <K extends keyof FiltersState>(
+  key: K,
+  value: FiltersState[K]
+) => {
+  setFilters((prev) => ({
+    ...prev,
+    [key]: value,
+  }));
+};
 
-  const buttonClass = (active: boolean) =>
-    `flex flex-col items-center justify-center gap-2 p-4 border rounded-xl h-24 transition-all ${
-      active
-        ? 'border-[#E44848] bg-white'
-        : 'border-[#E4E7EC] hover:border-[#E44848]'
-    }`;
+  const toggle = (key: keyof FiltersState) => {
+    setFilters((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
-  const handleSearch = () => {
-    onSearch({
-      location,
-      form,
-      transmission,
+  const reset = () => {
+    setFilters({
+      location: '',
+      form: '',
+      transmission: '',
       engine: '',
-      AC,
-      kitchen,
-      tv,
-      bathroom,
+      AC: false,
+      kitchen: false,
+      TV: false,
+      bathroom: false,
     });
   };
 
+  const radioOption = 'flex items-center gap-3 cursor-pointer';
+  const circle = 'w-5 h-5 rounded-full border flex items-center justify-center';
+
   return (
-    <aside className="w-full max-w-[360px]">
+    <div className="w-[320px] flex flex-col gap-6">
 
-      <div className="mb-8">
-        <label className="block text-sm font-medium text-[#475467] mb-2">
-          Location
-        </label>
-
-        <div className="relative">
-
-          <FaMapMarkerAlt className="absolute left-4 top-1/2 -translate-y-1/2 text-[#101828]" />
-
-          <input
-            type="text"
-            placeholder="Kyiv, Ukraine"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className="w-full rounded-xl bg-[#F7F7F7] py-4 pl-11 pr-4 outline-none border border-transparent focus:border-[#E44848]"
-          />
-
-        </div>
-
+      {/* LOCATION */}
+      <div>
+        <p className="text-sm text-gray-500 mb-2">Location</p>
+        <input
+          value={filters.location}
+          onChange={(e) => update('location', e.target.value)}
+          className="w-full border rounded-lg px-3 py-2"
+          placeholder="City"
+        />
       </div>
 
-      <p className="text-[#475467] text-sm mb-8">
-        Filters
-      </p>
+      {/* BODY TYPE (RADIO) */}
+      <div>
+        <p className="text-sm text-gray-500 mb-2">Body type</p>
 
-      <div className="mb-8">
+        <div className="flex flex-col gap-3">
+          {['van', 'alcove', 'fullyIntegrated', 'panelTruck'].map((item) => (
+            <label key={item} className={radioOption}>
+              <input
+                type="radio"
+                name="form"
+                className="hidden"
+                checked={filters.form === item}
+                onChange={() => update('form', item)}
+              />
 
-        <h3 className="text-xl font-semibold border-b border-[#DADDE1] pb-6 mb-6">
-          Vehicle equipment
-        </h3>
+              <div
+                className={`${circle} ${
+                  filters.form === item ? 'border-red-500' : 'border-gray-400'
+                }`}
+              >
+                {filters.form === item && (
+                  <div className="w-2.5 h-2.5 bg-red-500 rounded-full" />
+                )}
+              </div>
 
-        <div className="grid grid-cols-2 gap-3">
-
-          <button
-            type="button"
-            onClick={() => setAC(!AC)}
-            className={buttonClass(AC)}
-          >
-            <FaWind size={24} />
-            <span>AC</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() =>
-              setTransmission(
-                transmission === 'automatic'
-                  ? ''
-                  : 'automatic'
-              )
-            }
-            className={buttonClass(
-              transmission === 'automatic'
-            )}
-          >
-            <FaCog size={24} />
-            <span>Automatic</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setKitchen(!kitchen)}
-            className={buttonClass(kitchen)}
-          >
-            <MdKitchen size={24} />
-            <span>Kitchen</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setTv(!tv)}
-            className={buttonClass(tv)}
-          >
-            <FaTv size={24} />
-            <span>TV</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setBathroom(!bathroom)}
-            className={buttonClass(bathroom)}
-          >
-            <MdShower size={24} />
-            <span>Bathroom</span>
-          </button>
-            </div>
-      </div>
-
-      <div className="mb-8">
-        <h3 className="text-xl font-semibold border-b border-[#DADDE1] pb-6 mb-6">
-          Vehicle type
-        </h3>
-
-        <div className="grid grid-cols-2 gap-3">
-          {[
-            {
-              id: 'panelTruck',
-              label: 'Van',
-            },
-            {
-              id: 'fullyIntegrated',
-              label: 'Fully Integrated',
-            },
-            {
-              id: 'alcove',
-              label: 'Alcove',
-            },
-          ].map((type) => (
-            <button
-              key={type.id}
-              type="button"
-              onClick={() =>
-                setForm(form === type.id ? '' : type.id)
-              }
-              className={buttonClass(form === type.id)}
-            >
-              <TbGridDots size={24} />
-
-              <span className="text-center text-sm font-medium">
-                {type.label}
-              </span>
-            </button>
+              <span className="text-sm capitalize">{item}</span>
+            </label>
           ))}
         </div>
       </div>
 
-      <button
-        type="button"
-        onClick={handleSearch}
-        className="w-full rounded-full bg-[#E44848] py-4 font-semibold text-white transition hover:bg-[#D84343]"
-      >
-        Search
-      </button>
+      {/* TRANSMISSION (RADIO) */}
+      <div>
+        <p className="text-sm text-gray-500 mb-2">Transmission</p>
 
-    </aside>
+        <div className="flex flex-col gap-3">
+          {['automatic', 'manual'].map((item) => (
+            <label key={item} className={radioOption}>
+              <input
+                type="radio"
+                name="transmission"
+                className="hidden"
+                checked={filters.transmission === item}
+                onChange={() => update('transmission', item)}
+              />
+
+              <div
+                className={`${circle} ${
+                  filters.transmission === item
+                    ? 'border-red-500'
+                    : 'border-gray-400'
+                }`}
+              >
+                {filters.transmission === item && (
+                  <div className="w-2.5 h-2.5 bg-red-500 rounded-full" />
+                )}
+              </div>
+
+              <span className="text-sm capitalize">{item}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* ENGINE (RADIO) */}
+      <div>
+        <p className="text-sm text-gray-500 mb-2">Engine</p>
+
+        <div className="flex flex-col gap-3">
+          {['diesel', 'petrol', 'hybrid'].map((item) => (
+            <label key={item} className={radioOption}>
+              <input
+                type="radio"
+                name="engine"
+                className="hidden"
+                checked={filters.engine === item}
+                onChange={() => update('engine', item)}
+              />
+
+              <div
+                className={`${circle} ${
+                  filters.engine === item ? 'border-red-500' : 'border-gray-400'
+                }`}
+              >
+                {filters.engine === item && (
+                  <div className="w-2.5 h-2.5 bg-red-500 rounded-full" />
+                )}
+              </div>
+
+              <span className="text-sm capitalize">{item}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* FEATURES (CHECKBOX) */}
+      <div>
+        <p className="text-sm text-gray-500 mb-2">Features</p>
+
+        <div className="flex flex-col gap-3">
+          {[
+            { key: 'AC', label: 'AC' },
+            { key: 'kitchen', label: 'Kitchen' },
+            { key: 'TV', label: 'TV' },
+            { key: 'bathroom', label: 'Bathroom' },
+          ].map((item) => (
+            <label key={item.key} className={radioOption}>
+              <input
+                type="checkbox"
+                className="hidden"
+                checked={filters[item.key as keyof FiltersState] as boolean}
+                onChange={() => toggle(item.key as keyof FiltersState)}
+              />
+
+              <div
+                className={`w-5 h-5 border rounded-md flex items-center justify-center ${
+                  filters[item.key as keyof FiltersState]
+                    ? 'bg-red-500 border-red-500'
+                    : 'border-gray-400'
+                }`}
+              >
+                {filters[item.key as keyof FiltersState] && (
+                  <div className="w-2 h-2 bg-white rounded-sm" />
+                )}
+              </div>
+
+              <span className="text-sm">{item.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* ACTIONS */}
+      <div className="flex gap-3 pt-2">
+        <button
+          onClick={reset}
+          className="px-5 py-2 border rounded-lg text-sm"
+        >
+          Reset
+        </button>
+
+        <button
+          onClick={() => onSearch(filters)}
+          className="px-5 py-2 bg-red-500 text-white rounded-lg text-sm"
+        >
+          Search
+        </button>
+      </div>
+    </div>
   );
 }

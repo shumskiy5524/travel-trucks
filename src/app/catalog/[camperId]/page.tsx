@@ -1,206 +1,157 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'next/navigation';
-import { useMemo, useState } from 'react';
-import { FaStar, FaMapMarkerAlt } from 'react-icons/fa';
-import { Camper } from '@/types/camper';
-import BookingForm from '@/components/BookingForm';
 import Image from 'next/image';
+import { useParams } from 'next/navigation';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
-const fetchCamperDetails = async (id: string) => {
-  const response = await axios.get<Camper>(
-    `https://campers-api.goit.study/campers/${id}`
-  );
-  return response.data;
+type Camper = {
+  id: string;
+  name: string;
+  price: number;
+  rating: number;
+  location: string;
+  description: string;
+  gallery: string[];
+  reviews?: {
+    reviewer_name: string;
+    reviewer_rating: number;
+    comment: string;
+  }[];
 };
 
 export default function CamperDetailsPage() {
-  const params = useParams();
+  const { camperId } = useParams<{ camperId: string }>();
+  const [camper, setCamper] = useState<Camper | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const camperId = useMemo(() => {
-    const id = params?.camperId;
-    if (Array.isArray(id)) return id[0];
-    return id;
-  }, [params]);
 
-  const [activeTab, setActiveTab] = useState<'features' | 'reviews'>(
-    'features'
-  );
-
-  const {
-    data: camper,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ['camper', camperId],
-    queryFn: () => fetchCamperDetails(camperId as string),
-    enabled: typeof camperId === 'string' && camperId.length > 0,
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    date: '',
+    comment: '',
   });
 
-  if (isLoading) {
-    return (
-      <div className="text-center py-24 text-lg font-medium">
-        Loading camper details...
-      </div>
-    );
+  useEffect(() => {
+    const fetchCamper = async () => {
+      try {
+        const res = await axios.get(
+          `https://campers-api.goit.study/campers/${camperId}`
+        );
+        setCamper(res.data);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCamper();
+  }, [camperId]);
+
+  const handleBooking = async () => {
+    try {
+      await axios.post('https://campers-api.goit.study/booking', {
+        camperId,
+        ...form,
+      });
+
+      alert('Booking successful!');
+      setForm({ name: '', email: '', date: '', comment: '' });
+    } catch {
+  alert('Booking failed');
+}
+  };
+
+  if (loading) {
+    return <p className="p-10">Loading...</p>;
   }
 
-  if (isError || !camper) {
-    return (
-      <div className="text-center py-24 text-[#E44848] font-medium">
-        Failed to load camper details.
-      </div>
-    );
+  if (!camper) {
+    return <p className="p-10">Camper not found</p>;
   }
-
-  const safePrice =
-    typeof camper.price === 'number'
-      ? camper.price.toFixed(2)
-      : Number(camper.price || 0).toFixed(2);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl font-semibold text-[#101828]">
-        {camper.name}
-      </h1>
+    <div className="max-w-5xl mx-auto p-6 flex flex-col gap-10">
 
-      <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-[#101828]">
-        <div className="flex items-center gap-1">
-          <FaStar className="text-[#FFC531] w-4 h-4" />
-          <span className="underline">
-            {camper.rating} ({camper.reviews?.length ?? 0} Reviews)
-          </span>
-        </div>
-
-        <div className="flex items-center gap-1">
-          <FaMapMarkerAlt className="w-4 h-4" />
-          <span>{camper.location}</span>
-        </div>
+      <div>
+        <h1 className="text-3xl font-bold">{camper.name}</h1>
+        <p className="text-gray-500">📍 {camper.location}</p>
+        <p className="text-red-500 font-semibold">€{camper.price}</p>
+        <p>⭐ {camper.rating}</p>
       </div>
 
-      <div className="text-3xl font-semibold text-[#101828] mt-4">
-        €{safePrice}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-        {camper.gallery?.map((img, idx) => (
-          <div
-            key={idx}
-            className="h-[310px] overflow-hidden rounded-2xl bg-gray-100"
-          >
+     
+      <Swiper spaceBetween={10} slidesPerView={1}>
+        {camper.gallery?.map((img, i) => (
+          <SwiperSlide key={i}>
             <Image
-              src={camper.gallery[0]?.thumb || 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?q=80&w=400'}
-              alt={camper.name}
-              width={400}
-              height={300}
-              className="w-full h-full object-cover"
+              src={img}
+              alt="camper"
+              width={800}
+              height={500}
+              className="rounded-lg object-cover"
             />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+    
+      <p className="text-gray-700">{camper.description}</p>
+
+     
+      <div>
+        <h2 className="text-xl font-semibold mb-2">Reviews</h2>
+
+        {camper.reviews?.map((r, i) => (
+          <div key={i} className="border p-3 rounded mb-2">
+            <p className="font-semibold">{r.reviewer_name}</p>
+            <p>⭐ {r.reviewer_rating}</p>
+            <p>{r.comment}</p>
           </div>
         ))}
       </div>
 
-      <p className="text-[#475467] text-base leading-relaxed mt-7 max-w-3xl">
-        {camper.description}
-      </p>
+      <div className="border p-4 rounded flex flex-col gap-3">
+        <h2 className="text-xl font-semibold">Book this camper</h2>
 
-      <div className="flex gap-10 border-b border-[#E4E7EC] mt-12 mb-10">
+        <input
+          placeholder="Name"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          className="border p-2 rounded"
+        />
+
+        <input
+          placeholder="Email"
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          className="border p-2 rounded"
+        />
+
+        <input
+          type="date"
+          value={form.date}
+          onChange={(e) => setForm({ ...form, date: e.target.value })}
+          className="border p-2 rounded"
+        />
+
+        <textarea
+          placeholder="Comment"
+          value={form.comment}
+          onChange={(e) =>
+            setForm({ ...form, comment: e.target.value })
+          }
+          className="border p-2 rounded"
+        />
+
         <button
-          onClick={() => setActiveTab('features')}
-          className={`pb-6 text-xl font-semibold transition-all relative ${
-            activeTab === 'features'
-              ? 'text-[#101828]'
-              : 'text-[#475467]'
-          }`}
+          onClick={handleBooking}
+          className="bg-red-500 text-white py-2 rounded"
         >
-          Features
+          Book now
         </button>
-
-        <button
-          onClick={() => setActiveTab('reviews')}
-          className={`pb-6 text-xl font-semibold transition-all relative ${
-            activeTab === 'reviews'
-              ? 'text-[#101828]'
-              : 'text-[#475467]'
-          }`}
-        >
-          Reviews
-        </button>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-16 items-start">
-        <div className="flex-grow w-full">
-          {activeTab === 'features' ? (
-            <div className="bg-[#F7F9FC] p-7 rounded-2xl">
-              <h3 className="text-xl font-semibold text-[#101828] border-b border-[#E4E7EC] pb-6 mb-6">
-                Vehicle details
-              </h3>
-
-              <ul className="flex flex-col gap-4 text-base font-medium">
-                <li className="flex justify-between">
-                  <span className="text-[#475467]">Length</span>
-                  <span>{camper.length}</span>
-                </li>
-
-                <li className="flex justify-between">
-                  <span className="text-[#475467]">Width</span>
-                  <span>{camper.width}</span>
-                </li>
-
-                <li className="flex justify-between">
-                  <span className="text-[#475467]">Height</span>
-                  <span>{camper.height}</span>
-                </li>
-
-                <li className="flex justify-between">
-                  <span className="text-[#475467]">Tank</span>
-                  <span>{camper.tank}</span>
-                </li>
-
-                <li className="flex justify-between">
-                  <span className="text-[#475467]">Consumption</span>
-                  <span>{camper.consumption}</span>
-                </li>
-              </ul>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-8">
-              {camper.reviews?.map((review, idx) => (
-                <div key={idx} className="flex flex-col gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-full bg-[#F2F4F7] flex items-center justify-center text-xl font-semibold text-[#E44848]">
-                      {review.reviewer_name?.[0]}
-                    </div>
-
-                    <div>
-                      <h4>{review.reviewer_name}</h4>
-
-                      <div className="flex gap-1 mt-1">
-                        {[...Array(5)].map((_, i) => (
-                          <FaStar
-                            key={i}
-                            className={`w-4 h-4 ${
-                              i < review.reviewer_rating
-                                ? 'text-[#FFC531]'
-                                : 'text-[#E4E7EC]'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-[#475467] text-sm">
-                    {review.comment}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {camperId && <BookingForm camperId={camper.id} />}
       </div>
     </div>
   );

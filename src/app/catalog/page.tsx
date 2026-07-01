@@ -1,40 +1,16 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { useState } from 'react';
 import Filters from '@/components/Filters';
 import CamperCard from '@/components/CamperCard';
-import { CampersResponse, FilterState } from '@/types/camper';
-import { QueryFunctionContext } from '@tanstack/react-query';
+import { fetchCampers } from '@/lib/api';
+
 
 const LIMIT = 4;
 
-const fetchCampers = async ({
-  pageParam,
-  queryKey,
-}: QueryFunctionContext<[string, FilterState], number>) => {
-  const [, filters] = queryKey;
-
-const params: Record<string, unknown> = {
-  page: pageParam,
-  limit: LIMIT,
-};
-
-  if (filters.location) params.location = filters.location;
-  if (filters.form) params.form = filters.form;
-  if (filters.transmission) params.transmission = filters.transmission;
-  if (filters.AC) params.AC = filters.AC;
-  if (filters.kitchen) params.kitchen = filters.kitchen;
-  if (filters.tv) params.tv = filters.tv;
-  if (filters.bathroom) params.bathroom = filters.bathroom;
-
-  const response = await axios.get<CampersResponse>('https://campers-api.goit.study/campers', { params });
-  return response.data;
-};
-
 export default function CatalogPage() {
-  const [filters, setFilters] = useState<FilterState>({
+  const [filters, setFilters] = useState({
     location: '',
     form: '',
     transmission: '',
@@ -54,49 +30,54 @@ export default function CatalogPage() {
     isError,
   } = useInfiniteQuery({
     queryKey: ['campers', filters],
-    queryFn: fetchCampers,
     initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) => {
-      const loadedCampersCount = allPages.length * LIMIT;
-      return loadedCampersCount < lastPage.total ? allPages.length + 1 : undefined;
+
+    queryFn: ({ pageParam = 1 }) =>
+      fetchCampers({
+        page: pageParam,
+        ...filters,
+      }),
+
+    getNextPageParam: (lastPage, pages) => {
+      const loaded = pages.length * LIMIT;
+      return loaded < lastPage.total ? pages.length + 1 : undefined;
     },
   });
 
   const campers = data?.pages.flatMap((page) => page.items) || [];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-      <div className="flex flex-col lg:flex-row gap-16 items-start">
+    <div className="mx-auto max-w-7xl px-4 py-12">
+      <div className="flex gap-10">
+        
+    
         <Filters onSearch={(newFilters) => setFilters(newFilters)} />
 
-        <div className="flex-grow w-full flex flex-col gap-6">
+        <div className="flex-1 flex flex-col gap-6">
+
           {isLoading && (
-            <div className="flex justify-center py-12 text-lg font-medium text-[#475467]">
-              Loading amazing campers...
-            </div>
+            <p className="text-center">Loading campers...</p>
           )}
 
           {isError && (
-            <div className="text-center py-12 text-[#E44848] font-medium">
-              Opps! Something went wrong while fetching data.
-            </div>
+            <p className="text-center text-red-500">
+              Something went wrong
+            </p>
           )}
 
-          <div className="flex flex-col gap-6">
-            {campers.map((camper) => (
-              <CamperCard key={camper.id} camper={camper} />
-            ))}
-          </div>
+          {campers.map((camper) => (
+            <CamperCard key={camper.id} camper={camper} />
+          ))}
 
+    
           {hasNextPage && (
             <div className="flex justify-center mt-10">
               <button
-                type="button"
                 onClick={() => fetchNextPage()}
                 disabled={isFetchingNextPage}
-                className="px-8 py-4 border border-[#E4E7EC] text-[#101828] text-base font-semibold rounded-full hover:border-[#E44848] transition-colors disabled:opacity-50"
+                className="px-6 py-3 border rounded-full"
               >
-                {isFetchingNextPage ? 'Loading more...' : 'Load more'}
+                {isFetchingNextPage ? 'Loading...' : 'Load more'}
               </button>
             </div>
           )}
