@@ -7,10 +7,6 @@ type FiltersState = {
   form: string;
   transmission: string;
   engine: string;
-  AC: boolean;
-  kitchen: boolean;
-  TV: boolean;
-  bathroom: boolean;
 };
 
 type Props = {
@@ -23,204 +19,207 @@ export default function Filters({ onSearch }: Props) {
     form: '',
     transmission: '',
     engine: '',
-    AC: false,
-    kitchen: false,
-    TV: false,
-    bathroom: false,
   });
 
   const update = <K extends keyof FiltersState>(
-  key: K,
-  value: FiltersState[K]
-) => {
-  setFilters((prev) => ({
-    ...prev,
-    [key]: value,
-  }));
-};
-
-  const toggle = (key: keyof FiltersState) => {
-    setFilters((prev) => ({ ...prev, [key]: !prev[key] }));
+    key: K,
+    value: FiltersState[K]
+  ) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
   };
 
   const reset = () => {
-    setFilters({
+    const empty = {
       location: '',
       form: '',
       transmission: '',
       engine: '',
-      AC: false,
-      kitchen: false,
-      TV: false,
-      bathroom: false,
-    });
+    };
+
+    setFilters(empty);
+    onSearch(empty);
   };
 
-  const radioOption = 'flex items-center gap-3 cursor-pointer';
-  const circle = 'w-5 h-5 rounded-full border flex items-center justify-center';
+  const radioOption =
+    'flex items-center gap-3 cursor-pointer text-[#101828]';
+
+  const circle =
+    'w-5 h-5 rounded-full border border-[#6C717B] flex items-center justify-center';
 
   return (
-    <div className="w-[320px] flex flex-col gap-6">
+    <aside className="w-[360px] shrink-0">
 
-      {/* LOCATION */}
-      <div>
-        <p className="text-sm text-gray-500 mb-2">Location</p>
-        <input
-          value={filters.location}
-          onChange={(e) => update('location', e.target.value)}
-          className="w-full border rounded-lg px-3 py-2"
-          placeholder="City"
-        />
-      </div>
+      
 
-      {/* BODY TYPE (RADIO) */}
-      <div>
-        <p className="text-sm text-gray-500 mb-2">Body type</p>
+    <div className="mb-8">
+  <p className="text-sm text-[#6C717B] mb-2">Location</p>
+
+  <div className="relative">
+    <svg
+      className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6C717B]"
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"
+      />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+
+    <input
+      value={filters.location}
+      onChange={(e) => update('location', e.target.value)}
+      placeholder="City"
+      className="w-full h-14 rounded-xl bg-[#F7F7F7] pl-12 pr-5 outline-none"
+    />
+  </div>
+</div>
+
+      
+
+      <h2 className="text-xl font-semibold text-[#101828] mb-6">
+        Filters
+      </h2>
+
+      
+
+      <div className="mb-8">
+
+        <p className="text-sm text-[#6C717B] mb-4">
+          Camper form
+        </p>
 
         <div className="flex flex-col gap-3">
-          {['van', 'alcove', 'fullyIntegrated', 'panelTruck'].map((item) => (
-            <label key={item} className={radioOption}>
+
+          {[
+            ['alcove', 'Alcove'],
+            ['panelTruck', 'Panel Van'],
+            ['fullyIntegrated', 'Integrated'],
+            ['semiIntegrated', 'Semi Integrated'],
+          ].map(([value, label]) => (
+            <label key={value} className={radioOption}>
               <input
                 type="radio"
                 name="form"
                 className="hidden"
-                checked={filters.form === item}
-                onChange={() => update('form', item)}
+                checked={filters.form === value}
+                onChange={() => update('form', value)}
               />
 
-              <div
-                className={`${circle} ${
-                  filters.form === item ? 'border-red-500' : 'border-gray-400'
-                }`}
-              >
-                {filters.form === item && (
-                  <div className="w-2.5 h-2.5 bg-red-500 rounded-full" />
+              <div className={circle}>
+                {filters.form === value && (
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#829181]" />
                 )}
               </div>
 
-              <span className="text-sm capitalize">{item}</span>
+              <span>{label}</span>
             </label>
           ))}
         </div>
       </div>
 
-      {/* TRANSMISSION (RADIO) */}
-      <div>
-        <p className="text-sm text-gray-500 mb-2">Transmission</p>
+      
+
+      <div className="mb-8">
+
+        <p className="text-sm text-[#6C717B] mb-4">
+          Engine
+        </p>
 
         <div className="flex flex-col gap-3">
-          {['automatic', 'manual'].map((item) => (
-            <label key={item} className={radioOption}>
-              <input
-                type="radio"
-                name="transmission"
-                className="hidden"
-                checked={filters.transmission === item}
-                onChange={() => update('transmission', item)}
-              />
 
-              <div
-                className={`${circle} ${
-                  filters.transmission === item
-                    ? 'border-red-500'
-                    : 'border-gray-400'
-                }`}
-              >
-                {filters.transmission === item && (
-                  <div className="w-2.5 h-2.5 bg-red-500 rounded-full" />
-                )}
-              </div>
-
-              <span className="text-sm capitalize">{item}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* ENGINE (RADIO) */}
-      <div>
-        <p className="text-sm text-gray-500 mb-2">Engine</p>
-
-        <div className="flex flex-col gap-3">
-          {['diesel', 'petrol', 'hybrid'].map((item) => (
-            <label key={item} className={radioOption}>
+          {[
+            ['diesel', 'Diesel'],
+            ['petrol', 'Petrol'],
+            ['hybrid', 'Hybrid'],
+            ['electric', 'Electric'],
+          ].map(([value, label]) => (
+            <label key={value} className={radioOption}>
               <input
                 type="radio"
                 name="engine"
                 className="hidden"
-                checked={filters.engine === item}
-                onChange={() => update('engine', item)}
+                checked={filters.engine === value}
+                onChange={() => update('engine', value)}
               />
 
-              <div
-                className={`${circle} ${
-                  filters.engine === item ? 'border-red-500' : 'border-gray-400'
-                }`}
-              >
-                {filters.engine === item && (
-                  <div className="w-2.5 h-2.5 bg-red-500 rounded-full" />
+              <div className={circle}>
+                {filters.engine === value && (
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#829181]" />
                 )}
               </div>
 
-              <span className="text-sm capitalize">{item}</span>
+              <span>{label}</span>
             </label>
           ))}
         </div>
       </div>
 
-      {/* FEATURES (CHECKBOX) */}
-      <div>
-        <p className="text-sm text-gray-500 mb-2">Features</p>
+      
+
+      <div className="mb-10">
+
+        <p className="text-sm text-[#6C717B] mb-4">
+          Transmission
+        </p>
 
         <div className="flex flex-col gap-3">
+
           {[
-            { key: 'AC', label: 'AC' },
-            { key: 'kitchen', label: 'Kitchen' },
-            { key: 'TV', label: 'TV' },
-            { key: 'bathroom', label: 'Bathroom' },
-          ].map((item) => (
-            <label key={item.key} className={radioOption}>
+            ['automatic', 'Automatic'],
+            ['manual', 'Manual'],
+          ].map(([value, label]) => (
+            <label key={value} className={radioOption}>
               <input
-                type="checkbox"
+                type="radio"
+                name="transmission"
                 className="hidden"
-                checked={filters[item.key as keyof FiltersState] as boolean}
-                onChange={() => toggle(item.key as keyof FiltersState)}
+                checked={filters.transmission === value}
+                onChange={() => update('transmission', value)}
               />
 
-              <div
-                className={`w-5 h-5 border rounded-md flex items-center justify-center ${
-                  filters[item.key as keyof FiltersState]
-                    ? 'bg-red-500 border-red-500'
-                    : 'border-gray-400'
-                }`}
-              >
-                {filters[item.key as keyof FiltersState] && (
-                  <div className="w-2 h-2 bg-white rounded-sm" />
+              <div className={circle}>
+                {filters.transmission === value && (
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#829181]" />
                 )}
               </div>
 
-              <span className="text-sm">{item.label}</span>
+              <span>{label}</span>
             </label>
           ))}
         </div>
       </div>
 
-      {/* ACTIONS */}
-      <div className="flex gap-3 pt-2">
-        <button
-          onClick={reset}
-          className="px-5 py-2 border rounded-lg text-sm"
-        >
-          Reset
-        </button>
+   
+
+      <div className="flex flex-col gap-4">
 
         <button
           onClick={() => onSearch(filters)}
-          className="px-5 py-2 bg-red-500 text-white rounded-lg text-sm"
+          className="h-14 rounded-full bg-[#829181] text-white font-medium transition hover:bg-[#6d7b6c]"
         >
           Search
         </button>
+
+        <button
+          onClick={reset}
+          className="h-14 rounded-full border border-[#DADDE1] bg-white text-[#101828] transition hover:bg-[#F7F7F7]"
+        >
+          Clear filters
+        </button>
+
       </div>
-    </div>
+
+    </aside>
   );
 }

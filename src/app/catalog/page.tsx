@@ -6,20 +6,15 @@ import Filters from '@/components/Filters';
 import CamperCard from '@/components/CamperCard';
 import { fetchCampers } from '@/lib/api';
 
-
 const LIMIT = 4;
 
 export default function CatalogPage() {
   const [filters, setFilters] = useState({
-    location: '',
-    form: '',
-    transmission: '',
-    engine: '',
-    AC: false,
-    kitchen: false,
-    tv: false,
-    bathroom: false,
-  });
+  location: '',
+  form: '',
+  transmission: '',
+  engine: '',
+});
 
   const {
     data,
@@ -47,16 +42,21 @@ export default function CatalogPage() {
   const campers = data?.pages.flatMap((page) => page.items) || [];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12">
-      <div className="flex gap-10">
-        
-    
-        <Filters onSearch={(newFilters) => setFilters(newFilters)} />
+    <main className="mx-auto max-w-[1440px] px-16 py-12">
+      <div className="flex items-start gap-16">
 
-        <div className="flex-1 flex flex-col gap-6">
+       
+        <aside className="w-[360px] shrink-0">
+          <Filters onSearch={(newFilters) => setFilters(newFilters)} />
+        </aside>
+
+        
+        <section className="flex-1 flex flex-col gap-8">
 
           {isLoading && (
-            <p className="text-center">Loading campers...</p>
+            <p className="text-center text-[#475467]">
+              Loading campers...
+            </p>
           )}
 
           {isError && (
@@ -69,20 +69,30 @@ export default function CatalogPage() {
             <CamperCard key={camper.id} camper={camper} />
           ))}
 
-    
           {hasNextPage && (
-            <div className="flex justify-center mt-10">
+            <div className="flex justify-center pt-6">
               <button
                 onClick={() => fetchNextPage()}
                 disabled={isFetchingNextPage}
-                className="px-6 py-3 border rounded-full"
+                className="
+                  w-[145px]
+                  h-[56px]
+                  rounded-full
+                  border
+                  border-[#DADDE1]
+                  bg-white
+                  text-[#101828]
+                  font-medium
+                  transition
+                  hover:border-[#E44848]
+                "
               >
                 {isFetchingNextPage ? 'Loading...' : 'Load more'}
               </button>
             </div>
           )}
-        </div>
+        </section>
       </div>
-    </div>
+    </main>
   );
 }

@@ -82,20 +82,21 @@ export default function CamperDetailsPage() {
         <p>⭐ {camper.rating}</p>
       </div>
 
-     
-      <Swiper spaceBetween={10} slidesPerView={1}>
-        {camper.gallery?.map((img, i) => (
-          <SwiperSlide key={i}>
-            <Image
-              src={img}
-              alt="camper"
-              width={800}
-              height={500}
-              className="rounded-lg object-cover"
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+     <section className="mt-16 border-b">
+
+  <div className="flex gap-10">
+
+    <button className="pb-5 border-b-4 border-[#E44848] font-semibold">
+      Features
+    </button>
+
+    <button className="pb-5 font-semibold">
+      Reviews
+    </button>
+
+  </div>
+
+</section>
 
     
       <p className="text-gray-700">{camper.description}</p>

@@ -19,7 +19,7 @@ export default function BookingForm({ camperId }: BookingFormProps) {
     setLoading(true);
 
     try {
-      // Имитируем отправку на бэкенд согласно ТЗ
+      
       await axios.post('https://campers-api.goit.study/campers', {
         camperId,
         name,

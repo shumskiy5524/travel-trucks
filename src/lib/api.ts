@@ -1,33 +1,33 @@
 import axios from 'axios';
 
-const API = 'https://campers-api.goit.study/campers';
-const LIMIT = 4;
+const API = 'https://campers-api.goit.study';
 
-type Filters = {
+type CampersParams = {
+  page?: number;
   location?: string;
   form?: string;
   transmission?: string;
   engine?: string;
-  AC?: boolean;
-  kitchen?: boolean;
-  tv?: boolean;
-  bathroom?: boolean;
 };
 
-type CampersParams = {
-  page: number;
-} & Filters;
+type BookingData = {
+  name: string;
+  email: string;
+  bookingDate: string;
+  comment: string;
+};
 
 export const fetchCampers = async (params: CampersParams) => {
-  const { page, ...filters } = params;
+  const res = await axios.get(`${API}/campers`, { params });
+  return res.data;
+};
 
-  const { data } = await axios.get(API, {
-    params: {
-      page,
-      limit: LIMIT,
-      ...filters,
-    },
-  });
+export const fetchCamperById = async (id: string) => {
+  const res = await axios.get(`${API}/campers/${id}`);
+  return res.data;
+};
 
-  return data;
+export const createBooking = async (data: BookingData) => {
+  const res = await axios.post(`${API}/booking`, data);
+  return res.data;
 };
