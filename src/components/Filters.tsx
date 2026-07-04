@@ -38,90 +38,71 @@ export default function Filters({ onSearch }: Props) {
       transmission: '',
       engine: '',
     };
-
     setFilters(empty);
     onSearch(empty);
   };
 
-  const radioOption =
-    'flex items-center gap-3 cursor-pointer text-[#101828]';
-
-  const circle =
-    'w-5 h-5 rounded-full border border-[#6C717B] flex items-center justify-center';
-
   return (
-    <aside className="w-[360px] shrink-0">
-
+    <aside className="w-[380px] shrink-0 font-sans pl-16 pr-4 bg-white">
       
+   
+      <div className="mb-10">
+        <label className="text-sm font-normal text-[#6C717B] block mb-2">
+          Location
+        </label>
+        <div className="relative">
+          <svg
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-[#101828]"
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+            />
+          </svg>
+          <input
+            value={filters.location}
+            onChange={(e) => update('location', e.target.value)}
+            placeholder="Kyiv"
+            className="w-full h-12 rounded-xl bg-[#F7F7F7] pl-12 pr-4 text-[#101828] text-sm outline-none border border-transparent focus:border-[#DADDE1] transition-all"
+          />
+        </div>
+      </div>
 
-    <div className="mb-8">
-  <p className="text-sm text-[#6C717B] mb-2">Location</p>
-
-  <div className="relative">
-    <svg
-      className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6C717B]"
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"
-      />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-
-    <input
-      value={filters.location}
-      onChange={(e) => update('location', e.target.value)}
-      placeholder="City"
-      className="w-full h-14 rounded-xl bg-[#F7F7F7] pl-12 pr-5 outline-none"
-    />
-  </div>
-</div>
-
-      
-
-      <h2 className="text-xl font-semibold text-[#101828] mb-6">
+      <h2 className="text-xs font-medium text-[#6C717B] uppercase tracking-wider mb-8">
         Filters
       </h2>
 
       
-
       <div className="mb-8">
-
-        <p className="text-sm text-[#6C717B] mb-4">
+        <h3 className="text-sm font-semibold text-[#101828] mb-4">
           Camper form
-        </p>
-
-        <div className="flex flex-col gap-3">
-
+        </h3>
+        <div className="flex flex-col gap-4">
           {[
             ['alcove', 'Alcove'],
-            ['panelTruck', 'Panel Van'],
-            ['fullyIntegrated', 'Integrated'],
-            ['semiIntegrated', 'Semi Integrated'],
+            ['panel_van', 'Panel Van'],
+            ['integrated', 'Integrated'],
+            ['semi_integrated', 'Semi Integrated'],
           ].map(([value, label]) => (
-            <label key={value} className={radioOption}>
+            <label
+              key={value}
+              className="flex items-center gap-3 cursor-pointer text-sm text-[#101828] select-none"
+            >
               <input
                 type="radio"
                 name="form"
-                className="hidden"
+                className="w-5 h-5 accent-[#829181] cursor-pointer shrink-0"
                 checked={filters.form === value}
                 onChange={() => update('form', value)}
               />
-
-              <div className={circle}>
-                {filters.form === value && (
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#829181]" />
-                )}
-              </div>
-
               <span>{label}</span>
             </label>
           ))}
@@ -129,36 +110,55 @@ export default function Filters({ onSearch }: Props) {
       </div>
 
       
-
       <div className="mb-8">
-
-        <p className="text-sm text-[#6C717B] mb-4">
+        <h3 className="text-sm font-semibold text-[#101828] mb-4">
           Engine
-        </p>
-
-        <div className="flex flex-col gap-3">
-
+        </h3>
+        <div className="flex flex-col gap-4">
           {[
             ['diesel', 'Diesel'],
             ['petrol', 'Petrol'],
             ['hybrid', 'Hybrid'],
             ['electric', 'Electric'],
           ].map(([value, label]) => (
-            <label key={value} className={radioOption}>
+            <label
+              key={value}
+              className="flex items-center gap-3 cursor-pointer text-sm text-[#101828] select-none"
+            >
               <input
                 type="radio"
                 name="engine"
-                className="hidden"
+                className="w-5 h-5 accent-[#829181] cursor-pointer shrink-0"
                 checked={filters.engine === value}
                 onChange={() => update('engine', value)}
               />
+              <span>{label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
 
-              <div className={circle}>
-                {filters.engine === value && (
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#829181]" />
-                )}
-              </div>
-
+     
+      <div className="mb-10">
+        <h3 className="text-sm font-semibold text-[#101828] mb-4">
+          Transmission
+        </h3>
+        <div className="flex flex-col gap-4">
+          {[
+            ['automatic', 'Automatic'],
+            ['manual', 'Manual'],
+          ].map(([value, label]) => (
+            <label
+              key={value}
+              className="flex items-center gap-3 cursor-pointer text-sm text-[#101828] select-none"
+            >
+              <input
+                type="radio"
+                name="transmission"
+                className="w-5 h-5 accent-[#829181] cursor-pointer shrink-0"
+                checked={filters.transmission === value}
+                onChange={() => update('transmission', value)}
+              />
               <span>{label}</span>
             </label>
           ))}
@@ -166,58 +166,19 @@ export default function Filters({ onSearch }: Props) {
       </div>
 
       
-
-      <div className="mb-10">
-
-        <p className="text-sm text-[#6C717B] mb-4">
-          Transmission
-        </p>
-
-        <div className="flex flex-col gap-3">
-
-          {[
-            ['automatic', 'Automatic'],
-            ['manual', 'Manual'],
-          ].map(([value, label]) => (
-            <label key={value} className={radioOption}>
-              <input
-                type="radio"
-                name="transmission"
-                className="hidden"
-                checked={filters.transmission === value}
-                onChange={() => update('transmission', value)}
-              />
-
-              <div className={circle}>
-                {filters.transmission === value && (
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#829181]" />
-                )}
-              </div>
-
-              <span>{label}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-   
-
-      <div className="flex flex-col gap-4">
-
+      <div className="flex flex-col items-center gap-4 mt-6">
         <button
           onClick={() => onSearch(filters)}
-          className="h-14 rounded-full bg-[#829181] text-white font-medium transition hover:bg-[#6d7b6c]"
+          className="w-full h-12 rounded-full bg-[#829181] text-white font-medium text-sm transition hover:bg-[#728271] flex items-center justify-center tracking-wide"
         >
           Search
         </button>
-
         <button
           onClick={reset}
-          className="h-14 rounded-full border border-[#DADDE1] bg-white text-[#101828] transition hover:bg-[#F7F7F7]"
+          className="text-sm font-medium text-[#101828] hover:text-[#6C717B] transition-colors py-1"
         >
-          Clear filters
+          ✕ Clear filters
         </button>
-
       </div>
 
     </aside>

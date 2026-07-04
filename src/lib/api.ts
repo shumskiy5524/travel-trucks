@@ -1,33 +1,66 @@
 import axios from 'axios';
 
-const API = 'https://campers-api.goit.study';
+const instance = axios.create({
+  baseURL: 'https://campers-api.goit.study',
+});
 
-type CampersParams = {
+export interface CampersParams {
   page?: number;
+  limit?: number;
+  perPage?: number;
   location?: string;
   form?: string;
   transmission?: string;
   engine?: string;
+}
+
+
+const FORM_MAP: Record<string, string> = {
+  fullyIntegrated: 'integrated',
+  panelTruck: 'panel_van',
+  semiIntegrated: 'semi_integrated',
+  alcove: 'alcove',
+  integrated: 'integrated',
+  panel_van: 'panel_van',
+  semi_integrated: 'semi_integrated',
 };
 
-type BookingData = {
-  name: string;
-  email: string;
-  bookingDate: string;
-  comment: string;
-};
+export const fetchCampers = async (params: CampersParams = {}) => {
+  const queryParams: Record<string, string | number> = {};
 
-export const fetchCampers = async (params: CampersParams) => {
-  const res = await axios.get(`${API}/campers`, { params });
-  return res.data;
+  
+  if (params.page) queryParams.page = params.page;
+  if (params.limit) queryParams.perPage = params.limit;
+  if (params.perPage) queryParams.perPage = params.perPage;
+
+  
+  if (params.location) queryParams.location = params.location;
+  
+ 
+  if (params.form) {
+    queryParams.form = FORM_MAP[params.form] || params.form;
+  }
+  
+  if (params.transmission) queryParams.transmission = params.transmission;
+  if (params.engine) queryParams.engine = params.engine;
+
+  const response = await instance.get('/campers', { params: queryParams });
+  return response.data;
 };
 
 export const fetchCamperById = async (id: string) => {
-  const res = await axios.get(`${API}/campers/${id}`);
-  return res.data;
+  const response = await instance.get(`/campers/${id}`);
+  return response.data;
 };
 
-export const createBooking = async (data: BookingData) => {
-  const res = await axios.post(`${API}/booking`, data);
-  return res.data;
+export type BookingData = {
+  name: string;
+  email: string;
+  date: string;
+  comment: string;
+};
+
+export const createBooking = async (bookingData: BookingData) => {
+  const response = await instance.post('/bookings', bookingData);
+  return response.data;
 };

@@ -36,3 +36,7 @@ ul,
 ol {
   list-style: none;
 }
+
+.swiper-slide-thumb-active .active-thumb {
+  border-color: #E44848 !important;
+}
