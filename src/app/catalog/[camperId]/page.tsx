@@ -18,7 +18,12 @@ type Camper = {
   rating: number;
   location: string;
   description: string;
-  gallery: string[];
+ gallery: {
+  id: string;
+  thumb: string;
+  original: string;
+  order: number;
+}[];
   form: string;
   length: string;
   width: string;
@@ -51,7 +56,10 @@ export default function CamperDetailsPage() {
     const getCamper = async () => {
       try {
         const data = await fetchCamperById(camperId);
-        setCamper(data);
+
+console.log("DATA", JSON.stringify(data, null, 2));
+
+setCamper(data);
       } catch (err) {
         console.error('Error fetching camper:', err);
       } finally {
@@ -147,46 +155,54 @@ export default function CamperDetailsPage() {
       <div className="w-full max-w-[800px]">
         
         <Swiper
-          loop={true}
-          spaceBetween={10}
-          thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
-          modules={[FreeMode, Thumbs]}
-          className="w-full h-[480px] rounded-2xl mb-4 shadow-sm"
-        >
-          {camper.gallery?.map((img, idx) => (
-            <SwiperSlide key={idx}>
-              <div className="relative w-full h-full">
-                <Image 
-                  src={img} 
-                  alt={`${camper.name} view ${idx + 1}`} 
-                  fill 
-                  className="object-cover"
-                  priority={idx === 0}
-                />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+  loop={camper.gallery.length > 1}
+  spaceBetween={10}
+  thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+  modules={[FreeMode, Thumbs]}
+  className="w-full h-[480px] rounded-2xl mb-4 shadow-sm"
+>
+  {camper.gallery.map((img, idx) => (
+    <SwiperSlide key={img.id}>
+      <div className="relative w-full h-full">
+        <Image
+          src={img.original}
+          alt={`${camper.name} view ${idx + 1}`}
+          fill
+          className="object-cover"
+          priority={idx === 0}
+        />
+      </div>
+    </SwiperSlide>
+  ))}
+</Swiper>
 
        
         <Swiper
-          onSwiper={setThumbsSwiper}
-          loop={true}
-          spaceBetween={16}
-          slidesPerView={4}
-          freeMode={true}
-          watchSlidesProgress={true}
-          modules={[FreeMode, Thumbs]}
-          className="w-full h-[96px]"
-        >
-          {camper.gallery?.map((img, idx) => (
-            <SwiperSlide key={idx} className="cursor-pointer overflow-hidden rounded-xl">
-              <div className="relative w-full h-full border-2 border-transparent hover:border-[#E44848] transition active-thumb">
-                <Image src={img} alt="thumbnail" fill className="object-cover" />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+  onSwiper={setThumbsSwiper}
+  loop={camper.gallery.length > 1}
+  spaceBetween={16}
+  slidesPerView={4}
+  freeMode
+  watchSlidesProgress
+  modules={[FreeMode, Thumbs]}
+  className="w-full h-[96px]"
+>
+  {camper.gallery.map((img) => (
+    <SwiperSlide
+      key={img.id}
+      className="cursor-pointer overflow-hidden rounded-xl"
+    >
+      <div className="relative w-full h-full border-2 border-transparent hover:border-[#E44848] transition">
+        <Image
+          src={img.thumb}
+          alt="thumbnail"
+          fill
+          className="object-cover"
+        />
+      </div>
+    </SwiperSlide>
+  ))}
+</Swiper>
       </div>
 
       <p className="text-[#475467] leading-relaxed max-w-[1024px]">{camper.description}</p>

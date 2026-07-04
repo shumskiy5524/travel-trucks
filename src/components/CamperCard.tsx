@@ -10,7 +10,12 @@ type Camper = {
   rating: number;
   location: string;
   description: string;
-  gallery?: string[];
+  gallery?: {
+  id: string;
+  thumb: string;
+  original: string;
+  order: number;
+}[];
 };
 
 type Props = {
@@ -27,7 +32,7 @@ export default function CamperCard({ camper }: Props) {
     <div className="border rounded-xl p-4 flex gap-4 hover:shadow-lg transition">
 
       <Image
-  src={camper.gallery?.[0] || '/images/placeholder.jpg'}
+  src={camper.gallery?.[0]?.thumb || '/images/placeholder.jpg'}
   alt={camper.name}
   width={200}
   height={140}
