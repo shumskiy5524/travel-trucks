@@ -40,7 +40,7 @@ export default function CamperDetails({ camper }: CamperDetailsProps) {
   const [activeTab, setActiveTab] = useState<'features' | 'reviews'>('features');
 
   if (!camper) {
-    return <div className={styles.pageWrapper}>Загрузка данных...</div>;
+    return <div className={styles.pageWrapper}>Loading...</div>;
   }
 
   return (
@@ -175,7 +175,7 @@ export default function CamperDetails({ camper }: CamperDetailsProps) {
           <div className={styles.rightColumn}>
             <div className={styles.bookingFormCard}>
               <h3 className={styles.formTitle}>Book your campervan now</h3>
-              <p className={styles.formSubtitle}>Stay connected, we’ll call you back</p>
+              <p className={styles.formSubtitle}>Stay connected, we&ll call you back</p>
               
               <form className={styles.formFields} onSubmit={(e) => e.preventDefault()}>
                 <div className={styles.inputWrapper}>
