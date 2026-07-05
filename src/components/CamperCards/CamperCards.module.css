@@ -1,0 +1,146 @@
+.card {
+    border: 1px solid #DADDE1;
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    gap: 24px;
+    background-color: #ffffff;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+    
+}
+
+.card:hover {
+    box-shadow: 0 12px 24px rgba(16, 24, 40, 0.06);
+}
+
+.image {
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.headerRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #101828;
+    margin: 0;
+    max-width: 70%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.price {
+    font-size: 24px;
+    font-weight: 600;
+    color: #101828;
+}
+
+.metaRow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 16px;
+    color: #101828;
+    margin-bottom: 24px;
+}
+
+.ratingWrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.reviewsText {
+    text-decoration: underline;
+}
+
+.description {
+    font-size: 16px;
+    color: #6C717B;
+    line-height: 1.5;
+    margin: 0 0 24px 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    overflow: hidden;
+}
+
+
+.badgesRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    background-color: #F7F7F7;
+    border-radius: 9999px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #101828;
+}
+
+.badgeText {
+    text-transform: capitalize;
+}
+
+.locationWrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #101828;
+    font-size: 16px;
+}
+
+.locationIcon {
+    display: inline-flex;
+    align-items: center;
+    fill: none;
+}
+
+.actionRow {
+    margin-top: auto;
+}
+
+.showMoreButton {
+    width: 166px;
+    height: 56px;
+    border-radius: 9999px;
+    background-color: #829181;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.showMoreButton:hover {
+    background-color: #728271;
+}

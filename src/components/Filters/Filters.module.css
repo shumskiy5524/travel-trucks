@@ -1,0 +1,151 @@
+.aside {
+    width: 360px;
+    flex-shrink: 0;
+    font-family: "Inter", sans-serif;
+    padding: 0;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.fieldGroup {
+    margin-bottom: 40px;
+
+}
+
+.label {
+    font-size: 14px;
+    font-weight: 400;
+    color: #6C717B;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.inputWrapper {
+    position: relative;
+}
+
+.mapIcon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #101828;
+    pointer-events: none;
+}
+
+.input {
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+    background-color: #F7F7F7;
+    padding-left: 48px;
+    padding-right: 16px;
+    color: #101828;
+    font-size: 14px;
+    outline: none;
+    border: 1px solid transparent;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.input:focus {
+    border-color: #DADDE1;
+}
+
+.mainSectionTitle {
+    font-size: 12px;
+    font-weight: 500;
+    color: #6C717B;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 32px 0;
+}
+
+.filterBlock {
+    margin-bottom: 32px;
+    
+}
+
+.blockTitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: #101828;
+    margin: 0 0 16px 0;
+    
+}
+
+.optionsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.optionLabel {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #101828;
+    user-select: none;
+}
+
+.radioInput {
+    width: 20px;
+    height: 20px;
+    accent-color: #829181;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.actionsBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.searchButton {
+    width: 100%;
+    height: 56px;
+    border-radius: 9999px;
+    background-color: #829181;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: -0.01em;
+}
+
+.searchButton:hover {
+    background-color: #728271;
+}
+
+
+.clearButton {
+    width: 100%;
+    height: 56px;
+    border-radius: 9999px;
+    background: transparent;
+    border: 1px solid #DADDE1;
+    font-size: 16px;
+    font-weight: 500;
+    color: #101828;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.clearButton:hover {
+    background-color: #F7F7F7;
+    border-color: #101828;
+}

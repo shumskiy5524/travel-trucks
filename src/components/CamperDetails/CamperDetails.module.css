@@ -1,0 +1,371 @@
+.pageWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 1440px;
+    padding: 48px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+    /* Подключаем корпоративный шрифт */
+}
+
+.headerSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: 600;
+    color: #101828;
+    margin: 0 0 8px 0;
+}
+
+.metaInfo {
+    display: flex;
+    gap: 16px;
+    font-size: 14px;
+    color: #101828;
+    align-items: center;
+}
+
+.ratingWrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.reviewsLink {
+    text-decoration: underline;
+    margin-left: 4px;
+}
+
+.price {
+    font-size: 24px;
+    font-weight: 600;
+    color: #101828;
+    margin: 16px 0 0 0;
+}
+
+.galleryWrapper {
+    width: 100%;
+}
+
+.mainSwiper {
+    width: 100%;
+    height: 480px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+}
+
+.thumbSwiper {
+    width: 100%;
+    height: 96px;
+}
+
+.thumbSlide {
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.thumbImageWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.thumbImageWrapper:hover {
+    border-color: #E44848;
+}
+
+.description {
+    color: #6C717B;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+    max-width: 100%;
+}
+
+.tabsContainer {
+    border-bottom: 1px solid #DADDE1;
+    display: flex;
+    gap: 40px;
+    width: 100%;
+}
+
+.tabButton {
+    padding-bottom: 24px;
+    font-size: 18px;
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 4px solid transparent;
+    margin-bottom: -2px;
+}
+
+.tabActive {
+    border-bottom-color: #E44848;
+    color: #101828;
+}
+
+.tabInactive {
+    color: #6C717B;
+}
+
+.bottomGrid {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 40px;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.leftColumn {
+    width: 641px;
+    flex-shrink: 0;
+}
+
+.rightColumn {
+    width: 448px;
+    flex-shrink: 0;
+}
+
+.featuresCard {
+    background-color: #F7F7F7;
+    padding: 40px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.badgesList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.badge {
+    text-transform: capitalize;
+    background-color: #ffffff;
+    padding: 12px 18px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #101828;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.detailsTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #101828;
+    border-bottom: 1px solid #DADDE1;
+    padding-bottom: 24px;
+    margin: 0 0 24px 0;
+}
+
+.detailsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #101828;
+}
+
+.detailsRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detailsValue {
+    text-transform: capitalize;
+    font-weight: 400;
+}
+
+.reviewsList {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+}
+
+.reviewItem {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.reviewHeader {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    background-color: #F2F4F7;
+    color: #E44848;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.reviewerName {
+    font-weight: 600;
+    color: #101828;
+    margin: 0;
+}
+
+.reviewComment {
+    color: #6C717B;
+    font-size: 14px;
+    line-height: 1.5;
+    padding-left: 64px;
+    margin: 0;
+}
+
+.bookingFormCard {
+    width: 100%;
+    border: 1px solid #DADDE1;
+    padding: 40px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.formTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #101828;
+    margin: 0 0 8px 0;
+}
+
+.formSubtitle {
+    font-size: 14px;
+    color: #6C717B;
+    margin: 0 0 24px 0;
+}
+
+.formFields {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.inputField {
+    width: 100%;
+    height: 56px;
+    border-radius: 12px;
+    background-color: #F7F7F7;
+    padding: 0 20px;
+    outline: none;
+    border: 1px solid transparent;
+    color: #101828;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.inputField:focus {
+    border-color: #DADDE1;
+    background-color: #ffffff;
+}
+
+.inputError {
+    border-color: #E44848;
+    background-color: rgba(228, 72, 72, 0.05);
+}
+
+.errorText {
+    font-size: 12px;
+    color: #E44848;
+    padding: 0 4px;
+}
+
+.textareaField {
+    width: 100%;
+    height: 114px;
+    border-radius: 12px;
+    background-color: #F7F7F7;
+    padding: 20px;
+    outline: none;
+    border: 1px solid transparent;
+    color: #101828;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    resize: none;
+    box-sizing: border-box;
+}
+
+.textareaField:focus {
+    border-color: #DADDE1;
+    background-color: #ffffff;
+}
+
+.submitButton {
+    width: 160px;
+    height: 56px;
+    background-color: #829181;
+    /* Синхронизируем базовый оттенок зеленого */
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 16px;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    align-self: flex-start;
+    margin-top: 16px;
+}
+
+.submitButton:hover {
+    background-color: #728271;
+}
+
+.starsContainer {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.starGold {
+    color: #FFC533;
+}
+
+.starGray {
+    color: #E4E7EC;
+}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import styles from './Filters.module.css';
 
 type FiltersState = {
   location: string;
@@ -43,16 +44,16 @@ export default function Filters({ onSearch }: Props) {
   };
 
   return (
-    <aside className="w-[380px] shrink-0 font-sans pl-16 pr-4 bg-white">
+    <aside className={styles.aside}>
       
-   
-      <div className="mb-10">
-        <label className="text-sm font-normal text-[#6C717B] block mb-2">
+  
+      <div className={styles.fieldGroup}>
+        <label className={styles.label}>
           Location
         </label>
-        <div className="relative">
+        <div className={styles.inputWrapper}>
           <svg
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-[#101828]"
+            className={styles.mapIcon}
             xmlns="http://www.w3.org/2000/svg"
             width="18"
             height="18"
@@ -71,35 +72,32 @@ export default function Filters({ onSearch }: Props) {
             value={filters.location}
             onChange={(e) => update('location', e.target.value)}
             placeholder="Kyiv"
-            className="w-full h-12 rounded-xl bg-[#F7F7F7] pl-12 pr-4 text-[#101828] text-sm outline-none border border-transparent focus:border-[#DADDE1] transition-all"
+            className={styles.input}
           />
         </div>
       </div>
 
-      <h2 className="text-xs font-medium text-[#6C717B] uppercase tracking-wider mb-8">
+      <h2 className={styles.mainSectionTitle}>
         Filters
       </h2>
 
       
-      <div className="mb-8">
-        <h3 className="text-sm font-semibold text-[#101828] mb-4">
+      <div className={styles.filterBlock}>
+        <h3 className={styles.blockTitle}>
           Camper form
         </h3>
-        <div className="flex flex-col gap-4">
+        <div className={styles.optionsList}>
           {[
             ['alcove', 'Alcove'],
             ['panel_van', 'Panel Van'],
             ['integrated', 'Integrated'],
             ['semi_integrated', 'Semi Integrated'],
           ].map(([value, label]) => (
-            <label
-              key={value}
-              className="flex items-center gap-3 cursor-pointer text-sm text-[#101828] select-none"
-            >
+            <label key={value} className={styles.optionLabel}>
               <input
                 type="radio"
                 name="form"
-                className="w-5 h-5 accent-[#829181] cursor-pointer shrink-0"
+                className={styles.radioInput}
                 checked={filters.form === value}
                 onChange={() => update('form', value)}
               />
@@ -109,26 +107,23 @@ export default function Filters({ onSearch }: Props) {
         </div>
       </div>
 
-      
-      <div className="mb-8">
-        <h3 className="text-sm font-semibold text-[#101828] mb-4">
+   
+      <div className={styles.filterBlock}>
+        <h3 className={styles.blockTitle}>
           Engine
         </h3>
-        <div className="flex flex-col gap-4">
+        <div className={styles.optionsList}>
           {[
             ['diesel', 'Diesel'],
             ['petrol', 'Petrol'],
             ['hybrid', 'Hybrid'],
             ['electric', 'Electric'],
           ].map(([value, label]) => (
-            <label
-              key={value}
-              className="flex items-center gap-3 cursor-pointer text-sm text-[#101828] select-none"
-            >
+            <label key={value} className={styles.optionLabel}>
               <input
                 type="radio"
                 name="engine"
-                className="w-5 h-5 accent-[#829181] cursor-pointer shrink-0"
+                className={styles.radioInput}
                 checked={filters.engine === value}
                 onChange={() => update('engine', value)}
               />
@@ -138,24 +133,21 @@ export default function Filters({ onSearch }: Props) {
         </div>
       </div>
 
-     
-      <div className="mb-10">
-        <h3 className="text-sm font-semibold text-[#101828] mb-4">
+  
+      <div className={styles.fieldGroup}>
+        <h3 className={styles.blockTitle}>
           Transmission
         </h3>
-        <div className="flex flex-col gap-4">
+        <div className={styles.optionsList}>
           {[
             ['automatic', 'Automatic'],
             ['manual', 'Manual'],
           ].map(([value, label]) => (
-            <label
-              key={value}
-              className="flex items-center gap-3 cursor-pointer text-sm text-[#101828] select-none"
-            >
+            <label key={value} className={styles.optionLabel}>
               <input
                 type="radio"
                 name="transmission"
-                className="w-5 h-5 accent-[#829181] cursor-pointer shrink-0"
+                className={styles.radioInput}
                 checked={filters.transmission === value}
                 onChange={() => update('transmission', value)}
               />
@@ -165,18 +157,12 @@ export default function Filters({ onSearch }: Props) {
         </div>
       </div>
 
-      
-      <div className="flex flex-col items-center gap-4 mt-6">
-        <button
-          onClick={() => onSearch(filters)}
-          className="w-full h-12 rounded-full bg-[#829181] text-white font-medium text-sm transition hover:bg-[#728271] flex items-center justify-center tracking-wide"
-        >
+  
+      <div className={styles.actionsBlock}>
+        <button onClick={() => onSearch(filters)} className={styles.searchButton}>
           Search
         </button>
-        <button
-          onClick={reset}
-          className="text-sm font-medium text-[#101828] hover:text-[#6C717B] transition-colors py-1"
-        >
+        <button onClick={reset} className={styles.clearButton}>
           ✕ Clear filters
         </button>
       </div>

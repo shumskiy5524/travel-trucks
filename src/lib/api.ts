@@ -15,39 +15,37 @@ export interface CampersParams {
 }
 
 
-const FORM_MAP: Record<string, string> = {
+const FORM_MAPPING: Record<string, string> = {
   fullyIntegrated: 'integrated',
-  panelTruck: 'panel_van',
-  semiIntegrated: 'semi_integrated',
-  alcove: 'alcove',
   integrated: 'integrated',
+  panelTruck: 'panel_van',
   panel_van: 'panel_van',
+  alcove: 'alcove',
+  semiIntegrated: 'semi_integrated',
   semi_integrated: 'semi_integrated',
 };
 
 export const fetchCampers = async (params: CampersParams = {}) => {
   const queryParams: Record<string, string | number> = {};
 
-  
   if (params.page) queryParams.page = params.page;
   if (params.limit) queryParams.perPage = params.limit;
   if (params.perPage) queryParams.perPage = params.perPage;
 
-  
-  if (params.location) queryParams.location = params.location;
-  
  
+  if (params.location) queryParams.location = params.location.trim();
+
   if (params.form) {
-    queryParams.form = FORM_MAP[params.form] || params.form;
+    queryParams.form = FORM_MAPPING[params.form] || params.form;
   }
-  
+
+
   if (params.transmission) queryParams.transmission = params.transmission;
   if (params.engine) queryParams.engine = params.engine;
 
   const response = await instance.get('/campers', { params: queryParams });
   return response.data;
 };
-
 export const fetchCamperById = async (id: string) => {
   const response = await instance.get(`/campers/${id}`);
   return response.data;

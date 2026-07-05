@@ -1,0 +1,61 @@
+.header {
+    height: 72px;
+    border-bottom: 1px solid #F2F4F7;
+    background-color: #ffffff;
+    width: 100%;
+}
+
+.container {
+    margin: 0 auto;
+    display: flex;
+    height: 100%;
+    max-width: 1440px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 64px;
+    /* px-16 */
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    /* tracking-tight */
+    color: #101828;
+    text-decoration: none;
+}
+
+.logoAccent {
+    color: #E44848;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    /* gap-10 */
+}
+
+.navLink {
+    font-size: 16px;
+    font-weight: 500;
+    color: #101828;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.navLink:hover {
+    color: #E44848;
+}
+
+/* Модификатор для активной ссылки */
+.activeLink {
+    color: #E44848;
+}
+
+/* Фейковый блок-заглушка для сохранения центровки nav */
+.spacer {
+    width: 120px;
+}

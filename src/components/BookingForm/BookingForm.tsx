@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import axios from 'axios';
+import styles from './BookingForm.module.css';
 
 interface BookingFormProps {
   camperId: string;
@@ -19,7 +20,6 @@ export default function BookingForm({ camperId }: BookingFormProps) {
     setLoading(true);
 
     try {
-      
       await axios.post('https://campers-api.goit.study/campers', {
         camperId,
         name,
@@ -32,25 +32,27 @@ export default function BookingForm({ camperId }: BookingFormProps) {
       setEmail('');
       setDate('');
       setComment('');
-   } catch (error) {
-  console.error(error);
-  alert('Booking failed');
-}
+    } catch (error) {
+      console.error(error);
+      alert('Booking failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="border border-[#E4E7EC] rounded-2xl p-6 bg-white max-w-[448px] w-full">
-      <h3 className="text-xl font-semibold text-[#101828]">Book your campervan now</h3>
-      <p className="text-sm text-[#475467] mt-2 mb-6">Stay connected, attentive and mobile</p>
+    <div className={styles.formWrapper}>
+      <h3 className={styles.title}>Book your campervan now</h3>
+      <p className={styles.subtitle}>Stay connected, attentive and mobile</p>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"
           placeholder="Name*"
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-3 bg-[#F7F9FC] border border-transparent rounded-xl text-base text-[#101828] focus:outline-none focus:border-[#E44848] transition-all"
+          className={styles.input}
         />
         <input
           type="email"
@@ -58,26 +60,26 @@ export default function BookingForm({ camperId }: BookingFormProps) {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-3 bg-[#F7F9FC] border border-transparent rounded-xl text-base text-[#101828] focus:outline-none focus:border-[#E44848] transition-all"
+          className={styles.input}
         />
         <input
           type="date"
           required
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="w-full px-4 py-3 bg-[#F7F9FC] border border-transparent rounded-xl text-base text-[#101828] focus:outline-none focus:border-[#E44848] transition-all"
+          className={styles.input}
         />
         <textarea
           placeholder="Comment"
           rows={4}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          className="w-full px-4 py-3 bg-[#F7F9FC] border border-transparent rounded-xl text-base text-[#101828] focus:outline-none focus:border-[#E44848] transition-all resize-none"
+          className={styles.textarea}
         />
         <button
           type="submit"
           disabled={loading}
-          className="w-full mt-4 py-4 bg-[#E44848] text-white font-semibold text-base rounded-full hover:bg-[#cf3e3e] transition-colors disabled:opacity-50"
+          className={styles.submitButton}
         >
           {loading ? 'Sending...' : 'Send'}
         </button>

@@ -2,9 +2,10 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import Filters from '@/components/Filters';
-import CamperCard from '@/components/CamperCard';
+import Filters from '@/components/Filters/Filters';
+import CamperCard from '@/components/CamperCards/CamperCard';
 import { fetchCampers } from '@/lib/api';
+import styles from './catalog.module.css';
 
 const LIMIT = 4;
 
@@ -45,57 +46,62 @@ export default function CatalogPage() {
   };
 
   return (
-    <main className="mx-auto max-w-[1440px] px-16 py-12 relative">
-      
+    <main className={styles.catalogMain}>
+    
       {isLoading && (
-        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white p-10 rounded-3xl max-w-sm text-center shadow-xl flex flex-col items-center gap-4">
-            <div className="w-12 h-12 border-4 border-[#E44848] border-t-transparent rounded-full animate-spin"></div>
-            <h3 className="text-xl font-semibold text-[#101828]">Loading trucks...</h3>
-            <p className="text-sm text-[#475467]">Please wait while we fetch the best travel trucks for you</p>
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingCard}>
+            <div className={styles.spinner}></div>
+            <h3 className={styles.loadingTitle}>Loading trucks...</h3>
+            <p className={styles.loadingText}>Please wait while we fetch the best travel trucks for you</p>
           </div>
         </div>
       )}
 
-      <div className="flex items-start gap-16">
+      <div className={styles.catalogGrid}>
         
-        <aside className="shrink-0">
+      
+        <aside className={styles.filterAside}>
           <Filters onSearch={(newFilters) => setFilters(newFilters)} />
         </aside>
 
-        <section className="flex-1 flex flex-col gap-8">
+        
+        <section className={styles.campersSection}>
           {isError && (
-            <p className="text-center text-red-500 font-medium">Something went wrong. Please try again later.</p>
+            <p className={styles.errorText}>Something went wrong. Please try again later.</p>
           )}
 
+          
           {!isLoading && campers.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="w-32 h-32 text-[#829181] mb-6 text-6xl">🔍</div>
-              <h3 className="text-xl font-semibold text-[#101828] mb-2">No campers found</h3>
-              <p className="text-[#475467] max-w-sm mb-6">
+            <div className={styles.emptyState}>
+              <div className={styles.emptyIcon}>🔍</div>
+              <h3 className={styles.emptyTitle}>No campers found</h3>
+              <p className={styles.emptyDescription}>
                 We couldn&apos;t find any campers that match your filters. Try adjusting your search or clearing some filters.
               </p>
-              <div className="flex gap-4">
-                <button onClick={handleClearFilters} className="px-6 h-12 rounded-full border border-[#DADDE1] font-medium text-[#101828] hover:bg-gray-50">
+              <div className={styles.buttonGroup}>
+                <button onClick={handleClearFilters} className={styles.btnSecondary}>
                   Clear filters
                 </button>
-                <button onClick={handleClearFilters} className="px-6 h-12 rounded-full bg-[#829181] font-medium text-white hover:bg-[#6d7b6c]">
+                <button onClick={handleClearFilters} className={styles.btnPrimary}>
                   View all campers
                 </button>
               </div>
             </div>
           )}
 
+      
           {campers.map((camper) => camper && (
             <CamperCard key={camper.id} camper={camper} />
           ))}
 
+         
           {hasNextPage && (
-            <div className="flex justify-center pt-6">
+            <div className={styles.loadMoreWrapper}>
               <button
                 onClick={() => fetchNextPage()}
                 disabled={isFetchingNextPage}
-                className="w-[145px] h-[56px] rounded-full border border-[#DADDE1] bg-white text-[#101828] font-medium transition hover:border-[#E44848] disabled:opacity-50"
+                className={styles.loadMoreButton}
               >
                 {isFetchingNextPage ? 'Loading...' : 'Load more'}
               </button>
