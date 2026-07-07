@@ -34,3 +34,25 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+# CamperVan Finder
+
+Цей проєкт — це зручний веб-додаток для пошуку та бронювання кемперів. Він дозволяє користувачам переглядати каталог доступних автомобілів, фільтрувати їх за характеристиками, переглядати детальну інформацію та бронювати обрані моделі.
+
+## 🚀 Основні функції
+
+- **Каталог:** Перегляд списку доступних кемперів з пагінацією.
+- **Фільтрація:** Можливість фільтрувати кемпери за типом кузова, обладнанням та іншими характеристиками.
+- **Деталізація:** Сторінка з описом, галереєю, відгуками та характеристиками кожного кемпера.
+- **Бронювання:** Форма бронювання з валідацією даних та нотифікаціями про успішне замовлення.
+- **Адаптивність:** Інтерфейс коректно відображається на різних пристроях.
+
+## 🛠 Технології
+
+Проєкт розроблено з використанням наступних технологій:
+
+- **React** — бібліотека для створення інтерфейсів.
+- **Next.js** — фреймворк для рендерингу та маршрутизації.
+- **CSS Modules** — для стилізації компонентів.
+- **Axios** — для роботи з API.
+- **React Hot Toast** — для сповіщень користувача.

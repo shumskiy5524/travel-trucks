@@ -54,8 +54,6 @@ export const fetchCamperById = async (id: string) => {
 export type BookingData = {
   name: string;
   email: string;
-  date: string;
-  comment: string;
 };
 
 export const createBooking = async (bookingData: BookingData) => {
